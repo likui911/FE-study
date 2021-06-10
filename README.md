@@ -2,7 +2,7 @@
 
 
 ### 目录结构
-1. demo Vue基础APIDemo
+1. demo -- Vue 基础API Demo
 
 
 ### 参考资料
