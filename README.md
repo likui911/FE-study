@@ -2,7 +2,10 @@
 
 
 ### 目录结构
-1. demo -- Vue 基础API Demo
+|      |  Folder         | Describtion                  |
+| ---- | ----            | ----                         |
+|1     |demo             |Vue Essentials Demo           |
+|2     |vue-3-reactivity |Vue 3 Reactivity Course       |  
 
 
 ### 参考资料
