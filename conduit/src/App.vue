@@ -12,6 +12,7 @@ import AppFooter from './components/AppFooter.vue'
 import {
   getArticles
 } from './services/article/getArticles'
+import { postLogin } from './services/auth/postLogin'
 
 export default defineComponent({
   name: 'App',
@@ -20,13 +21,16 @@ export default defineComponent({
     AppFooter,
   },
   async setup() {
-    //todo test code
-    let responsePromise: null | Promise<ArticlesResponse> = null
-    responsePromise = getArticles(1)
-    if (responsePromise !== null) {
-      const response = await responsePromise
-      console.log(response)
-    }
+    let responsePromise: null | Promise<UserResponse> = null
+    responsePromise = postLogin({ email: '', password: "" })
+
+    //todo 错误数据的处理
+    responsePromise.then(r => { console.log(r) }).catch(errors => {
+      errors.then((er: any) => {
+        console.log(er?.errors)
+      })
+    })
+    return {}
   }
 })
 </script>

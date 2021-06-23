@@ -1,3 +1,6 @@
+import { stringifyQuery } from "vue-router";
+import params2query from "./paramsToQuery";
+
 export interface FetchRequestOptions {
   prefix: string;
   headers: Record<string, string>;
@@ -16,7 +19,27 @@ export default class FetchRequest {
     if (response.ok) {
       return response.json();
     }
-    throw new Error(response.statusText);
+    //todo 错误数据的处理
+    return Promise.reject(response.json());
+  };
+
+  private readonly generateFinalUrl = (
+    url: string,
+    options: Partial<FetchRequestOptions> = {}
+  ) => {
+    const prefix = options.prefix ?? this.options.prefix;
+    const params = Object.assign({}, this.options.params, options.params ?? {});
+    let finalUrl = `${prefix}${url}`;
+    if (Object.keys(params).length > 0) {
+      finalUrl += `?${params2query(params)}`;
+    }
+    return finalUrl;
+  };
+
+  private readonly generateFinalHeaders = (
+    options: Partial<FetchRequestOptions> = {}
+  ): FetchRequestOptions["headers"] => {
+    return Object.assign({}, this.options.headers, options.headers ?? {});
   };
 
   constructor(options: Partial<FetchRequestOptions> = {}) {
@@ -29,16 +52,30 @@ export default class FetchRequest {
     data?: unknown,
     options?: Partial<FetchRequestOptions>
   ): Promise<Response> {
-    //todo generate final url and options
-    url = "https://conduit.productionready.io/api/articles?limit=10&offset=0";
-    return fetch(url, options);
+    const finalUrl = this.generateFinalUrl(url, options);
+
+    const headers = this.generateFinalHeaders(options);
+    const fetchOptions: any = { method, headers };
+    if (data !== undefined) fetchOptions.body = JSON.stringify(data);
+
+    return fetch(finalUrl, fetchOptions);
   }
 
   get<T = unknown>(
     url: string,
     options?: Partial<FetchRequestOptions>
   ): Promise<T> {
-    return this.runFetch("GET", url, null, options).then((r) =>
+    return this.runFetch("GET", url, undefined, options).then((r) =>
+      this.handleResponse<T>(r)
+    );
+  }
+
+  post<T = unknown>(
+    url: string,
+    data?: unknown,
+    options?: Partial<FetchRequestOptions>
+  ): Promise<T> {
+    return this.runFetch("POST", url, data, options).then((r) =>
       this.handleResponse<T>(r)
     );
   }
