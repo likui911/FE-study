@@ -1,5 +1,5 @@
-import { stringifyQuery } from "vue-router";
-import params2query from "./paramsToQuery";
+import params2query from "./params_to_query";
+import { NetworkError } from "../types/errors";
 
 export interface FetchRequestOptions {
   prefix: string;
@@ -19,8 +19,7 @@ export default class FetchRequest {
     if (response.ok) {
       return response.json();
     }
-    //todo 错误数据的处理
-    return Promise.reject(response.json());
+    throw new NetworkError(response);
   };
 
   private readonly generateFinalUrl = (
