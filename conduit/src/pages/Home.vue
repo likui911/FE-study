@@ -67,18 +67,12 @@
 
         <div class="col-md-3">
           <div class="sidebar">
-            <p>Popular Tags</p>
-
-            <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
-            </div>
+            <suspense>
+              <template #default>
+                <popular-tags />
+              </template>
+              <template #fallback> Popular tags are downloading... </template>
+            </suspense>
           </div>
         </div>
       </div>
@@ -87,8 +81,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import PopularTags from "../components/PopularTags.vue";
+
 export default defineComponent({
-  name: 'Home',
-})
+  name: "HomePage",
+  components: {
+    PopularTags,
+  },
+});
 </script>
