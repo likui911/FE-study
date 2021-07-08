@@ -40,22 +40,22 @@
             v-for="todo in filteredTodos"
             class="todo"
             :key="todo.id"
-            :class="{ completed: todo.completed, editing: todo == editedTodo }"
+            :class="{ completed: todo.completed, editing: todo == editedTodo.value }"
           >
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
               <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
               <button class="destroy" @click="removeTodo(todo)"></button>
             </div>
-            <!-- <input
+            <input
               class="edit"
               type="text"
               v-model="todo.title"
-              v-todo-focus="todo == editedTodo"
+              v-todo-focus="todo == editedTodo.value"
               @blur="doneEdit(todo)"
               @keyup.enter="doneEdit(todo)"
               @keyup.esc="cancelEdit(todo)"
-            /> -->
+            />
           </li>
         </ul>
       </section>
@@ -97,10 +97,10 @@
 
     <script>
       // localStorage persistence
-      var STORAGE_KEY = "todos-vuejs-3.0";
-      var todoStorage = {
+      let STORAGE_KEY = "todos-vuejs-3.0";
+      let todoStorage = {
         fetch: function () {
-          var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
           todos.forEach(function (todo, index) {
             todo.id = index;
           });
@@ -113,7 +113,7 @@
       };
 
       // visibility filters
-      var filters = {
+      let filters = {
         all: function (todos) {
           return todos;
         },
@@ -132,21 +132,27 @@
       const { createApp, reactive, ref, computed, watch } = Vue;
 
       const app = createApp({
+        directives: {
+          "todo-focus": function (el, binding) {
+            if (binding.value) {
+              el.focus();
+            }
+          },
+        },
         setup() {
-          //data
-          const visibility = ref("all");
-          const newTodo = ref("");
-          const beforeEditCache = ref("");
           const todos = reactive(todoStorage.fetch());
-          const editedTodo = reactive({});
+          const visibility = ref("all");
 
-          //computed and watch
           const filteredTodos = computed(() => {
             return filters[visibility.value](todos);
           });
 
           const remaining = computed(() => {
             return filters.active(todos).length;
+          });
+
+          watch(todos, (todos) => {
+            todoStorage.save(todos);
           });
 
           const allDone = computed({
@@ -158,12 +164,13 @@
             },
           });
 
-          watch(todos, (todos) => {
-            todoStorage.save(todos);
-          });
-
-          //method
-          const addTodo = () => {
+          const removeCompleted = () => {
+            todos.splice(0, todos.length, ...filters.active(todos));
+          };
+          
+          // add todos
+          const newTodo = ref("");
+          const addTodo = function(){
             let value = newTodo.value && newTodo.value.trim();
             if (!value) {
               return;
@@ -177,30 +184,50 @@
             newTodo.value = "";
           };
 
-          const removeTodo = (todo) => {
+          // remove todos
+          const removeTodo = function(todo){
             todos.splice(todos.indexOf(todo), 1);
           };
 
-          const removeCompleted = () => {
-            todos.splice(0, todos.length, ...filters.active(todos));
+          // edit todos
+          let beforeEditCache = "";  
+          const editedTodo = reactive({ value: null });
+         
+          const editTodo = function(todo){
+            beforeEditCache = todo.title;
+            editedTodo.value=todo
           };
 
-          const editTodo = (todo) => {
-            //todo
-          };
+          const doneEdit = function(todo){
+            if (!editedTodo.value) {
+              return;
+            }
+            editedTodo.value = null;
+            todo.title = todo.title.trim();
+            if (!todo.title) {
+              removeTodo(todo);
+            }
+          }
 
+          const cancelEdit = function(todo){
+            editedTodo.value = null;
+            todo.title = beforeEditCache;
+          }
+         
           return {
-            visibility,
-            newTodo,
             todos,
-            editedTodo,
+            visibility,
             filteredTodos,
-            allDone,
             remaining,
+            allDone,
+            removeCompleted,
+            newTodo,
             addTodo,
             removeTodo,
-            removeCompleted,
+            editedTodo,
             editTodo,
+            doneEdit,
+            cancelEdit
           };
         },
       });
@@ -209,7 +236,7 @@
 
       // handle routing
       function onHashChange() {
-        var visibility = window.location.hash.replace(/#\/?/, "");
+        let visibility = window.location.hash.replace(/#\/?/, "");
 
         if (filters[visibility]) {
           vm.visibility = visibility;
