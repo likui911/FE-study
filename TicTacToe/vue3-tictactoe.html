@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <div class="game">
+      <div class="game-board">
+        <div>
+          <div class="board-row">
+            <button class="square">X</button><button class="square">X</button
+            ><button class="square">X</button>
+          </div>
+          <div class="board-row">
+            <button class="square">X</button><button class="square">O</button
+            ><button class="square"></button>
+          </div>
+          <div class="board-row">
+            <button class="square"></button><button class="square">O</button
+            ><button class="square">O</button>
+          </div>
+        </div>
+      </div>
+      <div class="game-info">
+        <div>Winner: X</div>
+        <ol>
+          <li><button>Go to game start</button></li>
+          <li><button>Go to move #1</button></li>
+          <li><button>Go to move #2</button></li>
+          <li><button>Go to move #3</button></li>
+          <li><button>Go to move #4</button></li>
+          <li><button>Go to move #5</button></li>
+          <li><button>Go to move #6</button></li>
+          <li><button>Go to move #7</button></li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <style>
+    body {
+      font: 14px "Century Gothic", Futura, sans-serif;
+      margin: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ddd;
+    }
+
+    ol,
+    ul {
+      padding-left: 30px;
+    }
+
+    .board-row:after {
+      clear: both;
+      content: "";
+      display: table;
+    }
+
+    .status {
+      margin-bottom: 10px;
+    }
+
+    .square {
+      background: #fff;
+      border: 1px solid #999;
+      float: left;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 34px;
+
+      margin-right: -1px;
+      margin-top: -1px;
+      padding: 0;
+      text-align: center;
+      width: 68px;
+      height: 68px;
+    }
+
+    .square:focus {
+      outline: none;
+    }
+
+    .kbd-navigation .square:focus {
+      background: #ddd;
+    }
+
+    .game {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      padding: 50px;
+      border-radius: 20px;
+    }
+
+    .game-info {
+      padding: 20px;
+      margin-left: 20px;
+    }
+  </style>
+</html>
