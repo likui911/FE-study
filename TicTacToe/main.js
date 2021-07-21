@@ -24,7 +24,7 @@ app.component('Game', {
         const history = ref([Array(9).fill("")])
 
         const current = computed(() => {
-            return history.value[history.value.length - 1]
+            return history.value[stepNumber.value]
         })
 
         const status = computed(() => {
@@ -40,13 +40,16 @@ app.component('Game', {
         });
 
         const onClick = (i) => {
+            history.value = history.value.slice(0, stepNumber.value + 1);
             let squares = current.value.slice();
+
             if (calculateWinner(squares) || squares[i]) {
                 return;
             }
             squares[i] = xIsNext.value ? 'X' : 'O';
             xIsNext.value = !xIsNext.value;
             history.value.push(squares);
+            stepNumber.value += 1;
         }
 
         const moves = computed(() => {
@@ -58,8 +61,8 @@ app.component('Game', {
             })
         })
         const jumpTo = (step) => {
-            // todo
-            console.log(step)
+            stepNumber.value = step;
+            xIsNext.value = (step % 2) === 0
         }
 
         return { current, moves, jumpTo, status, onClick }
