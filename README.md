@@ -1,14 +1,14 @@
-## Vue3.0学习笔记
+## FE 学习笔记
 
 
 ### 目录结构
-|      |  Folder         | Describtion                  |
-| ---- | ----            | ----                         |
-|1     |demo             |Vue Essentials Demo           |
-|2     |vue-3-reactivity |Vue 3 Reactivity Course       | 
-|3     |conduit          |[realworld](https://github.com/gothinkster/realworld)  | 
-|4     |TodoMVC          |[TodoMVC](https://vuejs.org/v2/examples/todomvc.html)           |
-|5     |TicTacToe        |[Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html) 
+|      |  Folder         | Describtion                  |category|
+| ---- | ----            | ----                         |----|
+|1     |demo             |Vue Essentials Demo           |vue3|
+|2     |vue-3-reactivity |Vue 3 Reactivity Course       | vue3|
+|3     |conduit          |[realworld](https://github.com/gothinkster/realworld)  | vue3|
+|4     |TodoMVC          |[TodoMVC](https://vuejs.org/v2/examples/todomvc.html)           |vue3|
+|5     |TicTacToe        |[Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)|vue3| 
 
 
 ### 参考资料
