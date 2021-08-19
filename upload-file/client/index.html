@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .btn {
+            width: 100px;
+            height: 100px;
+            border: none;
+            border: 1px dashed rgb(31, 154, 158);
+            background: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn" class="btn">上传文件</button>
+    <input id="input" type="file" style="display: none;" />
+    <script src="https://lib.baomitu.com/axios/0.21.1/axios.js"></script>
+    <script>
+        const axios = window.axios.create({ baseURL: 'http://localhost:3000' })
+
+        const domBtn = document.querySelector('#btn')
+        const domInput = document.querySelector('#input')
+        domBtn.onclick = function () {
+            domInput.click()
+        }
+        domInput.onchange = async function (ev) {
+            const [file] = ev.target.files
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('token', '123')
+            const res = await axios.post('/api/upload', formData)
+            console.log('res: ', res)
+        }
+    </script>
+</body>
+
+</html>

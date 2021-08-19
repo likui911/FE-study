@@ -10,6 +10,7 @@
 |4     |TodoMVC          |[TodoMVC](https://vuejs.org/v2/examples/todomvc.html)           |vue3|
 |5     |TicTacToe|[Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)|vue3| 
 |6     |tic-tac-toe |[Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)|react| 
+|7     |upload-file |upload file|web| 
 
 ### 参考资料
 1. [Vue.js Offical](https://v3.vuejs.org/)
